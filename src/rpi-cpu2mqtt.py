@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#°/usr/bin/env phython
 # Python (runs on 2 and 3) script to check cpu load, cpu temperature and free space,
 # on a Raspberry Pi computer and publish the data to a MQTT server.
 # RUN pip install paho-mqtt
@@ -70,7 +71,7 @@ def config_json(what_config):
 			"unique_id": "",
 			"unit_of_measurement": "",
 		}
-		data["state_topic"] = config.mqtt_topic_prefix+"/"+hostname+"/"+what_config
+		data["state_topic"] = hostname+"/"+what_config
 		data["unique_id"] = hostname+"_"+what_config
 		if what_config == "cpuload":
 			data["icon"] = "mdi:speedometer"
@@ -118,51 +119,51 @@ def publish_to_mqtt (cpu_load = 0, cpu_temp = 0, used_space = 0, voltage = 0, sy
 		# publish monitored values to MQTT
 		if config.cpu_load:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_cpuload/config", config_json('cpuload'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_cpuload/config", config_json('cpuload'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/cpuload", cpu_load, qos=1)
+			client.publish(hostname+"/cpuload", cpu_load, qos=1)
 			time.sleep(config.sleep_time)
 		if config.cpu_temp:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_cputemp/config", config_json('cputemp'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_cputemp/config", config_json('cputemp'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/cputemp", cpu_temp, qos=1)
+			client.publish(hostname+"/cputemp", cpu_temp, qos=1)
 			time.sleep(config.sleep_time)
 		if config.used_space:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_diskusage/config", config_json('diskusage'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_diskusage/config", config_json('diskusage'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/diskusage", used_space, qos=1)
+			client.publish(hostname+"/diskusage", used_space, qos=1)
 			time.sleep(config.sleep_time)
 		if config.voltage:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_voltage/config", config_json('voltage'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_voltage/config", config_json('voltage'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/voltage", voltage, qos=1)
+			client.publish(hostname+"/voltage", voltage, qos=1)
 			time.sleep(config.sleep_time)
 		if config.swap:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_swap/config", config_json('swap'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_swap/config", config_json('swap'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/swap", swap, qos=1)
+			client.publish(hostname+"/swap", swap, qos=1)
 			time.sleep(config.sleep_time)
 		if config.memory:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_memory/config", config_json('memory'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_memory/config", config_json('memory'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/memory", memory, qos=1)
+			client.publish(hostname+"/memory", memory, qos=1)
 			time.sleep(config.sleep_time)
 		if config.sys_clock_speed:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_sys_clock_speed/config", config_json('sys_clock_speed'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_sys_clock_speed/config", config_json('sys_clock_speed'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/sys_clock_speed", sys_clock_speed, qos=1)
+			client.publish(hostname+"/sys_clock_speed", sys_clock_speed, qos=1)
 			time.sleep(config.sleep_time)
 		if config.uptime:
 			if config.discovery_messages:
-				client.publish("homeassistant/sensor/"+config.mqtt_topic_prefix+"/"+hostname+"_uptime_days/config", config_json('uptime_days'), qos=0)
+				client.publish("homeassistant/sensor/"+hostname+"_uptime_days/config", config_json('uptime_days'), qos=0)
 				time.sleep(config.sleep_time)
-			client.publish(config.mqtt_topic_prefix+"/"+hostname+"/uptime_days", uptime_days, qos=1)
+			client.publish(hostname+"/uptime_days", uptime_days, qos=1)
 			time.sleep(config.sleep_time)
 		# disconect from mqtt server
 		client.disconnect()
@@ -179,7 +180,7 @@ def bulk_publish_to_mqtt (cpu_load = 0, cpu_temp = 0, used_space = 0, voltage = 
 		client.connect(config.mqtt_host, int(config.mqtt_port))
 
 		# publish monitored values to MQTT
-		client.publish(config.mqtt_topic_prefix+"/"+hostname, values, qos=1)
+		client.publish(hostname, values, qos=1)
 
 		# disconect from mqtt server
 		client.disconnect()
