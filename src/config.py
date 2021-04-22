@@ -1,11 +1,11 @@
 from random import randrange
 
 # MQTT server configuration
-mqtt_host = "localhost"
+mqtt_host = "qualityland"
 mqtt_user = ""
 mqtt_password = ""
 mqtt_port = "1883"
-mqtt_topic_prefix = "" #qualityland"
+mqtt_topic_prefix = "/system" #qualityland"
 
 # Messages configuration
 
